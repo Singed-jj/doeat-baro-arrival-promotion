@@ -14,6 +14,19 @@ function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("ko-KR").format(amount) + "원";
 }
 
+function getRankDisplay(rank: number): string {
+  if (rank === 1) return "🥇";
+  if (rank === 2) return "🥈";
+  if (rank === 3) return "🥉";
+  return String(rank);
+}
+
+function maskName(name: string): string {
+  if (name.length <= 1) return name;
+  // 첫 글자만 보이고 나머지는 * 처리
+  return name[0] + "*".repeat(name.length - 1);
+}
+
 export function PromotionTable() {
   return (
     <div className="w-full overflow-x-auto">
@@ -29,10 +42,10 @@ export function PromotionTable() {
         <TableBody>
           {promotionData.map((record: PromotionRecord, index: number) => (
             <TableRow key={record.riderId}>
-              <TableCell className="text-center font-medium">
-                {index + 1}
+              <TableCell className="text-center font-medium text-lg">
+                {getRankDisplay(index + 1)}
               </TableCell>
-              <TableCell className="font-medium">{record.riderName}</TableCell>
+              <TableCell className="font-medium">{maskName(record.riderName)}</TableCell>
               <TableCell className="text-right">
                 {record.deliveryCount.toLocaleString()}건
               </TableCell>
